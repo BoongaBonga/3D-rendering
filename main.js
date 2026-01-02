@@ -220,7 +220,11 @@ function transform(point) {
   //rotation
   const pRotated = rotatexz(point, alpha);
   //translation
-  const pTranslated = new point3D(pRotated.x, pRotated.y + Math.sin(phi), pRotated.z + zOffset);
+  const pTranslated = new point3D(
+    pRotated.x,
+    pRotated.y + Math.sin(phi) * 0.75,
+    pRotated.z + zOffset
+  );
   //optional other behavior???
 
   //return
@@ -229,14 +233,30 @@ function transform(point) {
 
 let dots = [
   //cube
-  new point3D(0.5, 0.5, 0.5), //0
-  new point3D(0.5, -0.5, 0.5), //1
-  new point3D(-0.5, -0.5, 0.5), //2
-  new point3D(-0.5, 0.5, 0.5), //3
-  new point3D(0.5, 0.5, -0.5), //4
-  new point3D(0.5, -0.5, -0.5), //5
-  new point3D(-0.5, -0.5, -0.5), //6
-  new point3D(-0.5, 0.5, -0.5), //7
+  new point3D(0.25, -1, 0.25),
+  new point3D(0.25, -1, -0.25),
+  new point3D(-0.25, -1, -0.25),
+  new point3D(-0.25, -1, 0.25),
+  new point3D(-0.25, 0, 0.25),
+  new point3D(-0.25, 0, -0.25),
+  new point3D(0.25, 0, -0.25),
+  new point3D(0.25, 0, 0.25),
+  new point3D(0.75, 0, 0.25),
+  new point3D(0.75, 0, -0.25),
+  new point3D(-0.75, 0, -0.25),
+  new point3D(-0.75, 0, 0.25),
+  new point3D(-0.75, 0.5, 0.25),
+  new point3D(-0.75, 0.5, -0.25),
+  new point3D(0.75, 0.5, -0.25),
+  new point3D(0.75, 0.5, 0.25),
+  new point3D(0.25, 0.5, 0.25),
+  new point3D(0.25, 0.5, -0.25),
+  new point3D(-0.25, 0.5, -0.25),
+  new point3D(-0.25, 0.5, 0.25),
+  new point3D(-0.25, 1, 0.25),
+  new point3D(0.25, 1, 0.25),
+  new point3D(0.25, 1, -0.25),
+  new point3D(-0.25, 1, -0.25),
   //center
   new point3D(0, 0, 0), //8
 ];
@@ -260,29 +280,38 @@ function removePoint() {
 
 //array of arrays of indices in the dots array to connect
 let lines = [
-  //front square
-  [0, 1],
+  [6, 1],
+  [7, 0],
+  [4, 3],
+  [5, 2],
   [1, 2],
-  [2, 3],
+  [3, 2],
   [3, 0],
-  //back square
-  [4, 5],
-  [5, 6],
-  [6, 7],
-  [7, 4],
-  //connections
-  [0, 4],
-  [1, 5],
-  [2, 6],
-  [3, 7],
-  /*
-  //right cross
-  [0, 5],
-  [1, 4],
-  //left cross
-  [2, 7],
-  [3, 6],
-  */
+  [1, 0],
+  [6, 9],
+  [8, 9],
+  [7, 8],
+  [14, 9],
+  [15, 8],
+  [15, 14],
+  [5, 10],
+  [11, 10],
+  [11, 4],
+  [10, 13],
+  [12, 13],
+  [12, 11],
+  [14, 17],
+  [15, 16],
+  [12, 19],
+  [13, 18],
+  [20, 23],
+  [22, 23],
+  [22, 21],
+  [20, 21],
+  [18, 23],
+  [19, 20],
+  [22, 17],
+  [21, 16],
 ];
 
 //allow the user to add lines by passing in two point's indices
@@ -313,26 +342,40 @@ function decrementLinesFromIndex(removedIndex) {
 
 //array of triangles formed with arrays of size 3 with indices of the points in the point array
 let triangles = [
-  //front two triangles (facing front)
-  [6, 7, 4, "yellow"],
-  [6, 4, 5, "yellow"],
-  //back two triangles
-  [2, 1, 0, "red"],
-  [3, 2, 0, "red"],
-  //side right triangles
-  [5, 4, 0, "green"],
-  [0, 1, 5, "green"],
-  //side left triangles
-  [3, 7, 2, "blue"],
-  [2, 7, 6, "blue"],
-
-  //top
-  [7, 3, 0, "white"],
-  [7, 0, 4, "white"],
-
-  //bottom
-  [5, 1, 2, "orange"],
-  [5, 2, 6, "orange"],
+  [4, 11, 10, "#6f0000"],
+  [4, 10, 5, "#6f0000"],
+  [4, 5, 2, "#a40000"],
+  [4, 2, 3, "#a40000"],
+  [12, 13, 10, "#b95800"],
+  [12, 10, 11, "#b95800"],
+  [20, 23, 18, "#b95800"],
+  [20, 18, 19, "#b95800"],
+  [22, 21, 16, "#b95800"],
+  [22, 16, 17, "#b95800"],
+  [14, 15, 8, "#b95800"],
+  [14, 8, 9, "#b95800"],
+  [8, 7, 6, "#6f0000"],
+  [8, 6, 9, "#6f0000"],
+  [3, 2, 1, "#6f0000"],
+  [0, 3, 1, "#6f0000"],
+  [6, 7, 0, "#ae0004"],
+  [6, 0, 1, "#ae0004"],
+  [13, 14, 9, "#cd6107"],
+  [13, 9, 10, "#cd6107"],
+  [23, 22, 17, "#cd6107"],
+  [23, 17, 18, "#cd6107"],
+  [5, 6, 1, "#cd6107"],
+  [5, 1, 2, "#cd6107"],
+  [21, 20, 19, "#cd6107"],
+  [21, 19, 16, "#cd6107"],
+  [7, 4, 3, "#cd6107"],
+  [7, 3, 0, "#cd6107"],
+  [15, 12, 11, "#cd6107"],
+  [15, 11, 8, "#cd6107"],
+  [12, 19, 18, "#ed7101"],
+  [12, 18, 13, "#ed7101"],
+  [16, 15, 14, "#ed7101"],
+  [16, 14, 17, "#ed7101"],
 ];
 
 //allow the user to add faces
@@ -346,7 +389,6 @@ function addFace() {
 }
 function removeFace() {
   triangles.splice(Number(remove_face_index.value), 1);
-  console.log(triangles);
 }
 
 function removeFacesWithPoint(point) {
@@ -378,20 +420,6 @@ function decrementFacesFromIndex(removedIndex) {
 let loop = window.setInterval(() => {
   canvasContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-  //draw some guidelines
-  if (grid_enable.checked) {
-    canvasContext.fillStyle = "black";
-    quickline(0, 0, -1, 0, 0, 1, 2);
-    quickline(1, 0, 0, -1, 0, 0, 2);
-    quickline(0, 1, 0, 0, -1, 0, 2);
-    drawText(transform(new point3D(1, 0, 0)), "+X");
-    drawText(transform(new point3D(-1, 0, 0)), "-X");
-    drawText(transform(new point3D(0, 1, 0)), "+Y");
-    drawText(transform(new point3D(0, -1, 0)), "-Y");
-    drawText(transform(new point3D(0, 0, 1)), "+Z");
-    drawText(transform(new point3D(0, 0, -1)), "-Z");
-  }
-
   //draw the dots!
   if (display_points.checked) {
     canvasContext.fillStyle = "red";
@@ -420,7 +448,7 @@ let loop = window.setInterval(() => {
       p1Transformed = transform(p1);
       p2Transformed = transform(p2);
 
-      drawLine(canvasContext, canvasElement, p1Transformed, p2Transformed, 1);
+      drawLine(canvasContext, canvasElement, p1Transformed, p2Transformed, 4);
 
       if (!display_lines_text.checked) continue;
       const middlePoint = new point3D(
@@ -466,6 +494,20 @@ let loop = window.setInterval(() => {
       );
       drawText(middlePoint, i);
     }
+  }
+
+  //draw some guidelines
+  if (grid_enable.checked) {
+    canvasContext.fillStyle = "black";
+    quickline(0, 0, -1, 0, 0, 1, 2);
+    quickline(1, 0, 0, -1, 0, 0, 2);
+    quickline(0, 1, 0, 0, -1, 0, 2);
+    drawText(transform(new point3D(1, 0, 0)), "+X");
+    drawText(transform(new point3D(-1, 0, 0)), "-X");
+    drawText(transform(new point3D(0, 1, 0)), "+Y");
+    drawText(transform(new point3D(0, -1, 0)), "-Y");
+    drawText(transform(new point3D(0, 0, 1)), "+Z");
+    drawText(transform(new point3D(0, 0, -1)), "-Z");
   }
 
   if (move_enable.checked) {
