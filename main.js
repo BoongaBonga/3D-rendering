@@ -233,10 +233,10 @@ function transform(point) {
 
 let dots = [
   //cube
-  new point3D(0.25, -1, 0.125),
-  new point3D(0.25, -1, -0.125),
-  new point3D(-0.25, -1, -0.125),
-  new point3D(-0.25, -1, 0.125),
+  new point3D(0.25, -1.5, 0.125),
+  new point3D(0.25, -1.5, -0.125),
+  new point3D(-0.25, -1.5, -0.125),
+  new point3D(-0.25, -1.5, 0.125),
   new point3D(-0.25, 0, 0.125),
   new point3D(-0.25, 0, -0.125),
   new point3D(0.25, 0, -0.125),
