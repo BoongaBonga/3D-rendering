@@ -507,6 +507,7 @@ function save() {
     triangles: triangles,
   };
   localStorage.setItem("save_vrnjzpbvjrfzobjvfi", JSON.stringify(save));
+  navigator.clipboard.writeText(JSON.stringify(save));
 }
 document.addEventListener("beforeunload", save);
 //loading
@@ -524,4 +525,21 @@ function load() {
 function reset() {
   localStorage.removeItem("save_vrnjzpbvjrfzobjvfi");
   location.reload();
+}
+
+function _import() {
+  let save;
+
+  navigator.clipboard
+    .readText()
+    .then((text) => {
+      save = JSON.parse(text);
+      if (!save) return;
+      dots = save.dots;
+      lines = save.lines;
+      triangles = save.triangles;
+    })
+    .catch((err) => {
+      console.error("Failed to read clipboard contents: ", err);
+    });
 }
