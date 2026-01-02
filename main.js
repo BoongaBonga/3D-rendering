@@ -3,6 +3,8 @@ let canvasContext, canvasElement;
 let zoom = 1;
 let zoomSensitivity = 0.001;
 
+//alert("start by enabling a display.");
+
 function createCanvas(containerElement) {
   //create canvas
   const canvas = document.createElement("canvas");
@@ -107,9 +109,15 @@ function rotatexz(point, angle) {
   );
 }
 
+//draw some text
+function drawText(point, text, offset_X = 5, offset_Y = 20) {
+  const pointScreen = toScreenCoords(to2dPoint(point), canvasElement);
+  canvasContext.fillText(text, pointScreen.x + offset_X, pointScreen.y + offset_Y);
+}
+
 //draw a line on a 2D canvas
 /**
- *
+ * draws a line from two 3D points
  * @param {Context} canvasCtx - the canvas
  * @param {point3D} p1 - a 3D point from your view
  * @param {point3D} p2 - a 3D point from your view
@@ -130,12 +138,21 @@ function drawLine(canvasCtx, canvasEl, p1, p2, thick) {
   canvasCtx.lineTo(p2Screen.x, p2Screen.y);
   canvasCtx.stroke();
 }
+function quickline(x, y, z, x2, y2, z2, thick) {
+  drawLine(
+    canvasContext,
+    canvasElement,
+    transform(new point3D(x, y, z)),
+    transform(new point3D(x2, y2, z2)),
+    thick
+  );
+}
 
 //draw a "dot"
 /**
  *
  * @param {Context} canvasCtx - the canvas
- * @param {point3D} point - a 3D point in your view
+ * @param {point3D} point - a 3D point that is not yet projected
  * @param {number} size - size of the point
  */
 function drawDot(canvasCtx, canvasEl, point, size) {
@@ -155,6 +172,16 @@ function isFacingFront(p1, p2, p3) {
 }
 
 //fill in a triangle
+/**
+ * draws a triangle from 3D points, and projects them on the screen
+ * @param {*} canvasCtx - canvas context
+ * @param {*} canvasEl - canvas element
+ * @param {*} p1 - first point
+ * @param {*} p2 - second point
+ * @param {*} p3 - third point
+ * @param {*} color - triangle color
+ * @returns - whether the operation was succesfull
+ */
 function drawTriangle(canvasCtx, canvasEl, p1, p2, p3, color) {
   //translated to 2D point
   const p1_2D = to2dPoint(p1);
@@ -178,11 +205,6 @@ function drawTriangle(canvasCtx, canvasEl, p1, p2, p3, color) {
   return true;
 }
 
-//on startup
-function load() {
-  [canvasContext, canvasElement] = createCanvas(document.getElementById("canvasContainer"));
-}
-
 function randomColor() {
   return `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(
     Math.random() * 255
@@ -196,7 +218,7 @@ let alpha = 0; // rotating
 //a function that determines how the points will be rotated or translated in the final view
 function transform(point) {
   //rotation
-  const pRotated = rotatexy(rotateyz(rotatexz(point, alpha), alpha), alpha);
+  const pRotated = rotatexz(point, alpha);
   //translation
   const pTranslated = new point3D(pRotated.x, pRotated.y + Math.sin(phi), pRotated.z + zOffset);
   //optional other behavior???
@@ -356,6 +378,20 @@ function decrementFacesFromIndex(removedIndex) {
 let loop = window.setInterval(() => {
   canvasContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
+  //draw some guidelines
+  if (grid_enable.checked) {
+    canvasContext.fillStyle = "black";
+    quickline(0, 0, -1, 0, 0, 1, 2);
+    quickline(1, 0, 0, -1, 0, 0, 2);
+    quickline(0, 1, 0, 0, -1, 0, 2);
+    drawText(transform(new point3D(1, 0, 0)), "+X");
+    drawText(transform(new point3D(-1, 0, 0)), "-X");
+    drawText(transform(new point3D(0, 1, 0)), "+Y");
+    drawText(transform(new point3D(0, -1, 0)), "-Y");
+    drawText(transform(new point3D(0, 0, 1)), "+Z");
+    drawText(transform(new point3D(0, 0, -1)), "-Z");
+  }
+
   //draw the dots!
   if (display_points.checked) {
     canvasContext.fillStyle = "red";
@@ -368,8 +404,7 @@ let loop = window.setInterval(() => {
 
       //add numbering
       if (!display_points_text.checked) continue;
-      const pointScreen = toScreenCoords(to2dPoint(p1Transformed), canvasElement);
-      canvasContext.fillText(i, pointScreen.x + 5, pointScreen.y + 20);
+      drawText(p1Transformed, i);
     }
   }
 
@@ -393,8 +428,7 @@ let loop = window.setInterval(() => {
         (p2Transformed.y - p1Transformed.y) / 2 + p1Transformed.y,
         (p2Transformed.z - p1Transformed.z) / 2 + p1Transformed.z
       );
-      const pointScreen = toScreenCoords(to2dPoint(middlePoint), canvasElement);
-      canvasContext.fillText(i, pointScreen.x + 5, pointScreen.y + 20);
+      drawText(middlePoint, i);
     }
   }
 
@@ -430,14 +464,15 @@ let loop = window.setInterval(() => {
         (p1Transformed.y + p2Transformed.y + p3Transformed.y) / 3,
         (p1Transformed.z + p2Transformed.z + p3Transformed.z) / 3
       );
-      const pointScreen = toScreenCoords(to2dPoint(middlePoint), canvasElement);
-      canvasContext.fillText(i, pointScreen.x + 5, pointScreen.y + 20);
+      drawText(middlePoint, i);
     }
   }
 
-  //zOffset += 0.01;
-  alpha += 0.02;
-  phi += 0.05;
+  if (move_enable.checked) {
+    //zOffset += 0.01;
+    alpha += 0.02;
+    phi += 0.05;
+  }
 }, 20);
 
 //
@@ -463,3 +498,30 @@ add_line_help.addEventListener("mouseout", () => {
 document.addEventListener("wheel", (e) => {
   zoom *= Math.exp(-e.deltaY * zoomSensitivity); //make it a lil smaller
 });
+
+//saving
+function save() {
+  let save = {
+    dots: dots,
+    lines: lines,
+    triangles: triangles,
+  };
+  localStorage.setItem("save_vrnjzpbvjrfzobjvfi", JSON.stringify(save));
+}
+document.addEventListener("beforeunload", save);
+//loading
+//on startup
+function load() {
+  [canvasContext, canvasElement] = createCanvas(document.getElementById("canvasContainer"));
+
+  let save = JSON.parse(localStorage.getItem("save_vrnjzpbvjrfzobjvfi"));
+  if (!save) return;
+  dots = save.dots;
+  lines = save.lines;
+  triangles = save.triangles;
+}
+
+function reset() {
+  localStorage.removeItem("save_vrnjzpbvjrfzobjvfi");
+  location.reload();
+}

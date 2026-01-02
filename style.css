@@ -48,3 +48,23 @@ input[type="number"] {
   background-color: aliceblue;
   border: solid 2px black;
 }
+#save_button {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#reset {
+  position: absolute;
+  left: 0;
+  top: 5vh;
+}
+#grid_enable_container {
+  position: absolute;
+  left: 0;
+  top: 10vh;
+}
+#move_enable_container {
+  position: absolute;
+  left: 0;
+  top: 15vh;
+}
