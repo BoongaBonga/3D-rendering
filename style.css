@@ -1,0 +1,50 @@
+#canvasContainer {
+  width: 100vh !important;
+  height: 100vh !important;
+}
+body {
+  margin: 0;
+  display: flex;
+  font-family: Arial;
+}
+canvas {
+  background-color: aquamarine;
+}
+
+#options {
+  width: calc(100vw - 100vh);
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  padding: 1vh;
+  text-align: center;
+}
+#options > div {
+  border: solid black 1px;
+  padding: 2%;
+}
+
+.divider {
+  border: solid 1px;
+  width: 100%;
+}
+
+input[type="number"] {
+  width: 95%;
+}
+.numberInputContainer {
+  display: flex;
+}
+.numberInputContainer > p {
+  margin: 0;
+  text-wrap: nowrap;
+}
+.numberInputContainer > input {
+  margin-left: 2px;
+}
+
+.help_text {
+  display: none;
+  position: absolute;
+  background-color: aliceblue;
+  border: solid 2px black;
+}

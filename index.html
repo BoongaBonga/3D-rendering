@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body onload="load()">
+    <div id="canvasContainer"></div>
+    <div id="options">
+      <div id="points">
+        <strong>points</strong> <br />
+        <br />
+        <!--display?-->
+        <input type="checkbox" id="display_points" /> display points <br />
+        <input type="checkbox" id="display_points_text" /> display point IDs<br />
+        <br />
+        <div class="divider"></div>
+        <!--add more stuff-->
+        <p>add a point</p>
+        <div class="numberInputContainer">x: <input type="number" id="add_point_X" /></div>
+        <div class="numberInputContainer">y: <input type="number" id="add_point_Y" /></div>
+        <div class="numberInputContainer">z: <input type="number" id="add_point_Z" /></div>
+        <!--submitting of the addition-->
+        <button onclick="addPoint()">Sumbit</button><br />
+
+        <br />
+        <div class="divider"></div>
+
+        <!--removing of stuff-->
+        <p>remove a point</p>
+        <div class="numberInputContainer">
+          index: <input type="number" id="remove_point_index" />
+        </div>
+        <!--submitting of the deletion-->
+        <button onclick="removePoint()">Sumbit</button><br />
+
+        <br />
+        <div class="divider"></div>
+      </div>
+
+      <div id="lines">
+        <strong>lines</strong> <br />
+        <br />
+        <!--display?-->
+        <input type="checkbox" id="display_lines" /> display lines <br />
+        <input type="checkbox" id="display_lines_text" /> display line IDs<br />
+        <br />
+        <!--add more stuff-->
+        <div class="divider"></div>
+
+        <p>add a line <span id="add_line_help">🛈</span></p>
+        <p id="line_help_text" class="help_text">
+          input the indices of the points to connect. order does not matter. It's a line.
+        </p>
+
+        <div class="numberInputContainer">
+          <p>point 1:</p>
+          <input type="number" id="add_line_1" />
+        </div>
+        <div class="numberInputContainer">
+          <p>point 2:</p>
+          <input type="number" id="add_line_2" />
+        </div>
+        <!--submitting of the addition-->
+        <button onclick="addLine()">Sumbit</button><br />
+
+        <br />
+        <div class="divider"></div>
+
+        <!--removing of stuff-->
+        <p>remove a line</p>
+        <div class="numberInputContainer">
+          index: <input type="number" id="remove_line_index" />
+        </div>
+        <!--submitting of the deletion-->
+        <button onclick="removeLine()">Sumbit</button><br />
+
+        <br />
+        <div class="divider"></div>
+      </div>
+
+      <div id="faces">
+        <strong>faces</strong> <br />
+        <br />
+        <!--display?-->
+        <input type="checkbox" id="display_faces" /> display faces <br />
+        <input type="checkbox" id="display_faces_text" /> display face IDs<br />
+        <br />
+        <!--add more stuff-->
+        <div class="divider"></div>
+
+        <p>add a face <span id="add_face_help">🛈</span></p>
+        <p id="face_help_text" class="help_text">
+          input the indices of the points to connect clockwise whilst facing you to make the face
+          render in your direction. Currently, faces created later will be drawn on top of faces
+          created earlier.
+        </p>
+        <div class="numberInputContainer">
+          <p>point 1:</p>
+          <input type="number" id="add_face_1" />
+        </div>
+        <div class="numberInputContainer">
+          <p>point 2:</p>
+          <input type="number" id="add_face_2" />
+        </div>
+        <div class="numberInputContainer">
+          <p>point 3:</p>
+          <input type="number" id="add_face_3" />
+        </div>
+
+        <div>
+          <input type="color" id="add_face_color" />
+        </div>
+        <!--submitting of the addition-->
+        <button onclick="addFace()">Sumbit</button><br />
+
+        <br />
+        <div class="divider"></div>
+
+        <!--removing of stuff-->
+        <p>remove a face</p>
+        <div class="numberInputContainer">
+          index: <input type="number" id="remove_face_index" />
+        </div>
+        <!--submitting of the deletion-->
+        <button onclick="removeFace()">Sumbit</button><br />
+
+        <br />
+        <div class="divider"></div>
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
